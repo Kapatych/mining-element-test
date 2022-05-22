@@ -1,26 +1,41 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="indicators">
+    <IndicatorBar v-for="item in list" :key="item.id" :indicator="item" class="indicators__item" />
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+  import {provide, ref} from 'vue';
+  import mock from './../mock.json';
+  import IndicatorBar from '@/components/IndicatorBar.vue';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  const list = ref(mock.data);
+  const hoverBarId = ref(0);
+  const updateHoverBarId = id => hoverBarId.value = id;
+  provide('hover', { hoverBarId, updateHoverBarId });
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import "src/assets/styles/main";
+  
+  #app {
+    margin: 60px 0 0 0;
+    padding: 0 20px;
+  }
+
+  .indicators {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 32px;
+  }
+  
+  .indicators__item {
+    min-width: 100%;
+    
+    @include sm {
+      min-width: calc(50% - 16px);
+    }
+    
+  }
 </style>
